@@ -24,7 +24,7 @@ connectDB();
 
 const allowedOrigins = [
   'http://localhost:5173', // Local development
-  'https://blog-application-x564.onrender.com' // Your deployed frontend
+  'https://blog-application-pv4n.onrender.com' // Your deployed frontend
 ];
 
 const corsOptions = {
