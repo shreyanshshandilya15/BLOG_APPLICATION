@@ -65,13 +65,13 @@ export default function Post() {
   return (
     <div>
       <Navbar />
-      <div className="flex gap-2 justify-center mx-2">
+      <div className="flex flex-col gap-10 justify-center mx-8 lg:flex-row">
         <div className="flex-grow-3 max-h-full">
           {post.photo && 
           <img 
              src={PF + post.photo} 
              alt="oops" 
-             className=" rounded-xl object-cover w-full my-3" 
+             className=" rounded-xl object-cover w-full my-3 object-cover" 
              style={{ maxHeight: "calc(100vh / 3)" }} 
              />
              }

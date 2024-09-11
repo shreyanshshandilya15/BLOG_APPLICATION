@@ -25,9 +25,9 @@ export default function Abouts() {
 
   return (
     <div className="my-3 flex flex-col items-center">
-        <hr />
+        <hr className="border-t-2 border-gray-400 w-full my-1" />
         <div className="text-center text-xl">ABOUT ME</div>
-        <hr />
+        <hr className="border-t-2 border-gray-400 w-full my-1"/>
         <img className="mx-auto my-3 h-60 w-52"src="/assets/aboutme.jpg" alt="" />
         <div className="text-center text-xl ">Lorem ipsum dolor sit amet, 
         consectetur adipisicing elit.
@@ -49,10 +49,10 @@ export default function Abouts() {
              }
             </ul>
         </div> */}
-        <hr className="my-2"/>
+        <hr className="border-t-2 border-gray-400 w-full my-1"/>
         <div className="text-center">FOLLOW US</div>
-        <hr  className="my-2"/>
-        <ul className="flex gap-2 text-xl justify-center">
+        <hr  className="border-t-2 border-gray-400 w-full my-1"/>
+        <ul className="flex gap-2 text-xl justify-center my-2">
         <i className="fa-brands fa-facebook"></i>
        <i className="fa-brands fa-instagram"></i>
        <i className="fa-brands fa-twitter"></i>

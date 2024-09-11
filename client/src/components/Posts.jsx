@@ -4,7 +4,7 @@ export default function Posts({posts}) {
     
   return (
     
-    <div className="flex w-4/5 flex-wrap">
+    <div className="flex flex-wrap gap-4">
        {posts.map((p)=>{
         return <Card post={p} key={p._id}/>
        })}

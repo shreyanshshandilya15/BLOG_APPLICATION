@@ -4,11 +4,15 @@ import Abouts from "../components/Abouts"
 import { useEffect, useState } from "react"
 import Posts from "../components/Posts.jsx"
 import { useLocation } from "react-router-dom"
+import NavbarMobile from "../components/NavbarMobile.jsx";
 
 export default function Home() {
    const [posts,setPosts]=useState([]);
    const {search}=useLocation();
-   
+   const [ismobile,setIsMobile]=useState(true);
+   const handlenavbar=()=>{
+        setIsMobile(prev=>!prev);
+   }
    const getdata=async()=>{
     let response=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/`+search,{
       method:"GET",
@@ -24,15 +28,29 @@ export default function Home() {
    },[search]);
 
   return (
-    <div>
-       <Navbar/>
+    <>
+      <div className="hidden lg:block">
+       <Navbar />
        <Slider />
-       <div className="flex gap-4">
+       <div className="flex flex-col gap-10 mx-8 sm:flex-col lg:flex-row ">
         <Posts posts={posts}/>
-        <div className="w-1/5">
+        <div className="">
         <Abouts/>
         </div>
        </div>
-    </div>
+      </div> 
+      <div className="block lg:hidden">
+       <NavbarMobile />
+      <Slider />
+       <div className="flex flex-col gap-10 mx-8 sm:flex-col lg:flex-row ">
+        <Posts posts={posts}/>
+        <div className="">
+        <Abouts/>
+        </div>
+       </div>
+      </div>
+    </>
+    
+     
   )
 }

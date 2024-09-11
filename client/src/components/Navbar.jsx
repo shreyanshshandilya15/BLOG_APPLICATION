@@ -11,10 +11,10 @@ export default function Navbar() {
   return (
     <div className='flex justify-between m-4'>
        <article className='flex gap-2 text-xl'>
-       <i className="fa-brands fa-facebook"></i>
-       <i className="fa-brands fa-instagram"></i>
-       <i className="fa-brands fa-twitter"></i>
-       <i className="fa-brands fa-pix"></i>
+       <a href=""><i className="fa-brands fa-facebook"></i></a>
+       <a href=""><i className="fa-brands fa-instagram"></i></a>
+       <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
+       <a href=""><i className="fa-brands fa-pix"></i></a>
        </article>
        <ul className='flex gap-3'>
         <Link to="/">HOME</Link>
