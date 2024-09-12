@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar"
 import axios from "axios"
 import { Context } from "../context/Context.jsx";
 import NavbarMobile from "../components/NavbarMobile.jsx";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const userRef=useRef();
@@ -21,9 +23,11 @@ export default function Login() {
           type:'LOGIN_SUCCESS',
           payload:response.data
         });
+        toast.success("Logged in Successfully !");
     }
     catch(err){
       await dispatch({ type: "LOGIN_FAILURE" });
+      toast.error("Check your credentials !");
     }
   };
   
@@ -32,7 +36,7 @@ export default function Login() {
   },[user]);
 
   return (   
-    <div className="overflow-hidden">      
+    <div >      
        <div className="hidden lg:block">
       <Navbar/>
       </div>
@@ -40,9 +44,12 @@ export default function Login() {
         <NavbarMobile />
       </div>
        <div className="bg-[url('./assets/login.jpg')] bg-cover bg-center h-[92vh] ">
-       <button className="text-white bg-green-800 w-24 py-1 float-end my-10 mx-4 rounded-md">Register</button>
-       <form className="h-80 w-80 bg-white rounded-full flex m-auto" >
-             {/* <div className=" text-3xl">Login</div>
+       <Link to={`/register`}>
+       <button className="text-white bg-green-800 w-24 py-1 my-10 mx-4 rounded-md">Register</button>
+       </Link>
+       <div className="w-80 flex max-w-full m-auto justify-center h-80 rounded-full items-center">
+       <form className="flex flex-col items-center" >
+             <div className=" text-3xl">Login</div>
              <div className="py-2">Username</div>
              <input ref={userRef} type="text" className="text-center bg-white py-1 rounded" name="" id="name" placeholder="Enter your name" />
              <div className="py-2">Password</div>
@@ -51,11 +58,12 @@ export default function Login() {
              <button 
                   disabled={isFetching} 
                   onClick={handlesubmit}
-                  className="bg-blue-600 my-3 text-white w-20 rounded-sm" 
+                  className="bg-blue-600 my-3 py-2 rounded-md text-white w-20" 
                   type="submit"
                   style={{cursor:isFetching? 'not-allowed' :'pointer'}}
-            >Login</button> */}
+            >Login</button>
        </form>
+       </div>
     </div>
     </div>
   )

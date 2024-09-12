@@ -15,7 +15,7 @@ export default function NavbarMobile() {
   return (
     <div>
       <article className='flex text-xl m-4 justify-between'>
-        <article className="flex gap-4 mx-auto">
+        <article className="flex gap-8 mx-auto">
         <a href=""><i className="fa-brands fa-facebook"></i></a>
        <a href=""><i className="fa-brands fa-instagram"></i></a>
        <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>

@@ -4,8 +4,8 @@ import { Link, useLocation } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
-import toast from "react-hot-toast";
 import NavbarMobile from "../components/NavbarMobile";
+import {toast} from "react-hot-toast";
 
 export default function Post() {
   const PF = `${import.meta.env.VITE_BACKEND_URL}/images/`;
@@ -45,8 +45,9 @@ export default function Post() {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/${post._id}`,
         { data: { name: user.name } });
       window.location.replace("/");
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      toast.error("Only Creater can delete the post !");
+      console.log(error);
     }
   };
 

@@ -13,6 +13,7 @@ function App() {
     const {user}=useContext(Context);
   return (
     <>
+     <Toaster />
      <Router>
      <Routes>
       <Route path="/" element={<Home />} />
@@ -22,7 +23,6 @@ function App() {
       <Route path="/profile" element={user ? <Profile/> : <Register/>}/>
       <Route path="/create" element={user ? <Create/> : <Register/> }/>
      </Routes>
-     <Toaster/>
      </Router>
     </>
   )

@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import Navbar from "../components/Navbar"
 import { Context } from "../context/Context";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 export default function Create() {
@@ -36,8 +37,10 @@ export default function Create() {
         //  console.log(res.data);
         if (res.data && res.data._id) {
           window.location.replace("/post/" + res.data._id);
+          toast.success("Post Created Successfully !");
         } else {
           console.log("Error: _id not found in response");
+          toast.error("Error occured in creating Post");
         }
         }catch(err){
           console.log(err);
