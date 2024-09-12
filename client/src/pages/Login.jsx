@@ -43,7 +43,7 @@ export default function Login() {
       <div className="block lg:hidden">
         <NavbarMobile />
       </div>
-       <div className="bg-[url('./assets/login.jpg')] bg-cover bg-center h-[92vh] ">
+       <div className="bg-[url('./assets/back.jpg')] bg-cover bg-center h-[92vh] ">
        <Link to={`/register`}>
        <button className="text-white bg-green-800 w-24 py-1 my-10 mx-4 rounded-md">Register</button>
        </Link>
