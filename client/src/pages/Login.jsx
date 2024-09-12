@@ -2,6 +2,7 @@ import { useContext ,useRef,useEffect} from "react"
 import Navbar from "../components/Navbar"
 import axios from "axios"
 import { Context } from "../context/Context.jsx";
+import NavbarMobile from "../components/NavbarMobile.jsx";
 
 export default function Login() {
   const userRef=useRef();
@@ -31,12 +32,17 @@ export default function Login() {
   },[user]);
 
   return (   
-    <div>      
-       <Navbar/>
-       <div className='' style={{backgroundImage:"url(http://source.unsplash.com/random/?user)"}} >
-       <button className="text-white bg-green-600 mx-1 my-10 w-28">Register</button>
-       <form action="" className="m-13 flex-col text-center" >
-             <div className=" text-3xl">Login</div>
+    <div className="overflow-hidden">      
+       <div className="hidden lg:block">
+      <Navbar/>
+      </div>
+      <div className="block lg:hidden">
+        <NavbarMobile />
+      </div>
+       <div className="bg-[url('./assets/login.jpg')] bg-cover bg-center h-[92vh] ">
+       <button className="text-white bg-green-800 w-24 py-1 float-end my-10 mx-4 rounded-md">Register</button>
+       <form className="h-80 w-80 bg-white rounded-full flex m-auto" >
+             {/* <div className=" text-3xl">Login</div>
              <div className="py-2">Username</div>
              <input ref={userRef} type="text" className="text-center bg-white py-1 rounded" name="" id="name" placeholder="Enter your name" />
              <div className="py-2">Password</div>
@@ -48,7 +54,7 @@ export default function Login() {
                   className="bg-blue-600 my-3 text-white w-20 rounded-sm" 
                   type="submit"
                   style={{cursor:isFetching? 'not-allowed' :'pointer'}}
-            >Login</button>
+            >Login</button> */}
        </form>
     </div>
     </div>

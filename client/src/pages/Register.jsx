@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom';
+import NavbarMobile from '../components/NavbarMobile.jsx';
 
 export default function Register() {
   const Navigate=useNavigate();
@@ -29,7 +30,12 @@ export default function Register() {
   return (
     
     <div>
-      <Navbar />
+       <div className="hidden lg:block">
+      <Navbar/>
+      </div>
+      <div className="block lg:hidden">
+        <NavbarMobile />
+      </div>
       <div className='max-h-full h-screen' style={{ backgroundImage: "url(http://source.unsplash.com/random/?user)" }} >
         <button className="text-white bg-green-600 mx-1 my-10 w-28">Login</button>
         <form className="m-13 flex-col text-center background: linear-gradient(to bottom, #ffffff 0%, #000000 100%); ">

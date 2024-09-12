@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { Context } from "../context/Context";
 import axios from "axios";
 import toast from "react-hot-toast";
+import NavbarMobile from "../components/NavbarMobile";
 
 export default function Post() {
   const PF = `${import.meta.env.VITE_BACKEND_URL}/images/`;
@@ -63,8 +64,13 @@ export default function Post() {
  };
  
   return (
-    <div>
-      <Navbar />
+    <div className="">
+      <div className="hidden lg:block">
+      <Navbar/>
+      </div>
+      <div className="block lg:hidden">
+        <NavbarMobile />
+      </div>
       <div className="flex flex-col gap-10 justify-center mx-8 lg:flex-row">
         <div className="flex-grow-3 max-h-full">
           {post.photo && 
