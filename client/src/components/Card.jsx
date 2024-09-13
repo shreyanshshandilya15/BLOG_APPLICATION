@@ -6,7 +6,7 @@ export default function Card({post}) {
      
   return (
     <Link to={`/post/${post._id}`}>
-    <div className="flex-col my-6 mx-2 p-2 md:max-w-lg shadow-lg transform transition-transform duration-300 hover:-translate-y-2">
+    <div className="flex-col my-6 mx-2 p-2 shadow-lg  md:max-w-lg transform transition-transform duration-300 hover:-translate-y-2">
       {post.photo &&  <img  className="object-cover w-96 h-72 mx-auto"src={PF + post.photo} />}
        {post.categories.map((cat)=>{
             <span key={cat._id} className="text-center text-xs text-gray-500  ">{post.categories.name}</span>

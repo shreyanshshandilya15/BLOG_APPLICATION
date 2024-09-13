@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import { useNavigate } from 'react-router-dom';
 import NavbarMobile from '../components/NavbarMobile.jsx';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function Register() {
   const Navigate=useNavigate();
@@ -24,8 +25,10 @@ export default function Register() {
           response=await response.json();
           console.log(response);
           Navigate("/login");
+          toast.success("Registration Successful,Login to write Posts!");
        }catch(error){
         setError(error);
+        toast.error(error);
        }
   }
   return (
@@ -37,7 +40,7 @@ export default function Register() {
       <div className="block lg:hidden">
         <NavbarMobile />
       </div>
-      <div className="bg-[url('./assets/login.jpg')] bg-cover bg-center h-[92vh] ">
+      <div className="bg-[url('/assets/back.jpg')] bg-cover bg-center h-[92vh] ">
         <Link to={`/login`}><button className="text-white bg-green-800 w-24 py-1 my-10 mx-4 rounded-md">Login</button></Link>
         <div className='w-80 flex max-w-full m-auto justify-center h-80 rounded-full items-center '>
         <form className="flex flex-col items-center">

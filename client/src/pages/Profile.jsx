@@ -49,10 +49,12 @@ export default function Profile() {
     return (
         <div>
             <Navbar />
-            <div className="flex gap-2 justify-between mx-8 w-full">
-                <div className=" w-3/4">
-                    <span className="text-xl relative text-yellow-600">Update Your Account</span>
-                    <span className="absolute right-1/4 text-red-600">Delete Account</span>
+            <div className="flex justify-center mx-8 sm:flex-col lg:flex-row lg:gap-32">
+                <div className="">
+                    <div className="flex items-center justify-between">
+                    <span className="text-xl text-yellow-600">Update Your Account</span>
+                    <span className=" text-red-600">Delete Account</span>
+                    </div>
                     <form action="" onSubmit={handlesubmit}>
                         <div className="my-2 text-blue-500">Profile Picture</div>
                         <img src={file ? URL.createObjectURL(file) : PF+user.profile} className="h-28 my-4 w-28 object-cover " alt="" />
@@ -73,6 +75,7 @@ export default function Profile() {
                              id="" 
                              placeholder={user.name}
                              onChange={(e)=>setName(e.target.value)}
+                             className="border-b-2 "
                         />
                         <div className="my-2 text-2xl">Email</div>
                         <input 
@@ -80,13 +83,13 @@ export default function Profile() {
                              name="" 
                              placeholder= {user.email} 
                              onChange={(e)=>setEmail(e.target.value)} 
-                             id="" 
+                             id=""
+                             className="border-b-2" 
                         />
                         <div className="my-2 text-2xl">Password</div>
                         <input 
                             type="password" 
-                            className="my-2" 
-                            placeholder= {user.password} 
+                            className="my-2 border-b-2" 
                             name="" 
                             id="" 
                             onChange={(e)=>setPassword(e.target.value)}
@@ -95,7 +98,7 @@ export default function Profile() {
                         <button className="text-white bg-green-900 w-20 rounded " type="submit">Update</button>
                     </form>
                 </div>
-                <div className="w-1/4">
+                <div className="flex-grow-1">
                     <Abouts />
                 </div>
             </div>

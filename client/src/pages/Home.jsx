@@ -26,13 +26,13 @@ export default function Home() {
    useEffect(()=>{
     getdata();
    },[search]);
-
+  
   return (
     <>
       <div className="hidden lg:block">
        <Navbar />
        <Slider />
-       <div className="flex flex-col gap-10 mx-8 sm:flex-col lg:flex-row ">
+       <div className="flex flex-col gap-10 mx-8 lg:flex-row ">
         <Posts posts={posts}/>
         <div className="">
         <Abouts/>
@@ -42,7 +42,7 @@ export default function Home() {
       <div className="block lg:hidden">
        <NavbarMobile />
       <Slider />
-       <div className="flex flex-col gap-10 mx-8 sm:flex-col lg:flex-row ">
+       <div className="flex flex-col gap-10 mx-8 sm:flex-col ">
         <Posts posts={posts}/>
         <div className="">
         <Abouts/>
@@ -50,7 +50,5 @@ export default function Home() {
        </div>
       </div>
     </>
-    
-     
   )
 }
