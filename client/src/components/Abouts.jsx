@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
+import { useContext } from "react";
+import { Context } from "../context/Context";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Abouts() {
   const [cat,setCat]=useState([]);
   const {search}=useLocation();
-
+  const {user,dispatch}=useContext(Context);
+   const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`
   // useEffect(()=>{
   //   const getcategory=async()=>{
   //     try{
@@ -28,7 +31,7 @@ export default function Abouts() {
         <hr className="border-t-2 border-gray-400 w-full my-1" />
         <div className="text-center text-xl">ABOUT ME</div>
         <hr className="border-t-2 border-gray-400 w-full my-1"/>
-        <img className="mx-auto my-3 h-60 w-52"src="/assets/aboutme.jpg" alt="" />
+        <img className="mx-auto my-3 h-60 w-52 object-cover"src={PF+user.profile}alt="" />
         <div className="text-center text-xl ">Lorem ipsum dolor sit amet, 
         consectetur adipisicing elit.
          Amet quos velit magnam?</div>

@@ -9,14 +9,14 @@ export default function Navbar() {
          dispatch({type:"LOGOUT"});
    }
   return (
-    <div className='flex justify-between m-4'>
-       <article className='flex gap-2 text-xl'>
+    <div className='flex justify-between items-center my-4'>
+       <article className='flex gap-4 text-xl m-4'>
        <a href=""><i className="fa-brands fa-facebook"></i></a>
        <a href=""><i className="fa-brands fa-instagram"></i></a>
        <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
        <a href=""><i className="fa-brands fa-pix"></i></a>
        </article>
-       <ul className='flex gap-3'>
+       <ul className='flex gap-3 m-4'>
         <Link to="/">HOME</Link>
         <Link to="/about">ABOUT</Link>
         <Link to="/contact">CONTACT</Link>
@@ -25,7 +25,7 @@ export default function Navbar() {
        </ul>
        <article className='flex items-center gap-2 text-xl'>
         {user ? <>
-          <Link to="/profile"><img className="h-8 w-8 rounded object-cover"src={PF+user.profile} alt="Loading..."/></Link>
+          <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover"src={PF+user.profile} alt="Loading..."/></Link>
           <i className="fa-solid fa-magnifying-glass"></i> 
         </>  :
         <>

@@ -4,6 +4,7 @@ import { useContext, useState } from "react"
 import { Context } from "../context/Context";
 import axios from "axios";
 import toast from "react-hot-toast";
+import NavbarMobile from "../components/NavbarMobile.jsx";
  
 export default function Profile() {
     const { user ,dispatch} = useContext(Context);
@@ -26,21 +27,23 @@ export default function Profile() {
             const filename = Date.now() + file.name;
             data.append("name", filename);
             data.append("file", file);
-            updatedUser.photo = filename;
+            updatedUser.profile = filename;
             try {
-                await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, updatedUser);
-            } catch (err) {
-                console.log(console.log(err));
+                await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, data);
+            } catch (error) {
+                toast.error("Error occured while uploading informations");
             } try {
                 const res=await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${user._id}`, updatedUser);
                 //  <Navigate to={"/post/"+res.data._id}/>
                 //  window.location.replace("/post/"+res.data._id);
                 //  console.log(res.data);
+                console.log(res.data);
                 dispatch({type:"UPDATE_SUCCESS",payload:res.data});
-                toast.success("user has been updated !");
                 window.location.reload();
+                toast.success("user profile has been updated !");
             } catch (err) {
                 dispatch({type:"UPDATE_FAILURE"});
+                toast.error("Fill other details too!");
                 console.log(err);
             }
         }
@@ -48,9 +51,14 @@ export default function Profile() {
 
     return (
         <div>
-            <Navbar />
-            <div className="flex justify-center mx-8 sm:flex-col lg:flex-row lg:gap-32">
-                <div className="">
+             <div className="hidden lg:block">
+            <Navbar/>
+            </div>
+            <div className="block lg:hidden">
+             <NavbarMobile />
+             </div>
+            <div className="flex sm:flex-col lg:flex-row lg:justify-between lg:mx-36 sm:mx-10">
+                <div className="flex-grow-2">
                     <div className="flex items-center justify-between">
                     <span className="text-xl text-yellow-600">Update Your Account</span>
                     <span className=" text-red-600">Delete Account</span>
@@ -95,7 +103,7 @@ export default function Profile() {
                             onChange={(e)=>setPassword(e.target.value)}
                         />
                         <div></div>
-                        <button className="text-white bg-green-900 w-20 rounded " type="submit">Update</button>
+                        <button className="text-white bg-green-900 w-20 rounded p-2" type="submit">Update</button>
                     </form>
                 </div>
                 <div className="flex-grow-1">

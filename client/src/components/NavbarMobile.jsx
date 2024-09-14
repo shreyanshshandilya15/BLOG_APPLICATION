@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 export default function NavbarMobile() {
      const [shownav,setShowNav]=useState(false);
      const {user,dispatch}=useContext(Context);
+    const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`
      const handlelogout=()=>{
         dispatch({type:"LOGOUT"});
      }
@@ -14,8 +15,8 @@ export default function NavbarMobile() {
      }
   return (
     <div>
-      <article className='flex text-xl m-4 justify-between'>
-        <article className="flex gap-8 mx-auto">
+      <article className='flex text-xl m-4 justify-between items-center'>
+        <article className="flex gap-12 mx-auto">
         <a href=""><i className="fa-brands fa-facebook"></i></a>
        <a href=""><i className="fa-brands fa-instagram"></i></a>
        <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
@@ -35,14 +36,15 @@ export default function NavbarMobile() {
         <Link to="/create" className="my-1">WRITE</Link>
         <hr className="border-2 border-gray-600 w-2/3"/>
         {user ? <><Link to="/register" onClick={handlelogout} className="my-1">{user && "LOGOUT"}</Link>
-         <hr className="border-2 border-gray-600 w-2/3 "/></>
-        
+         <hr className="border-2 border-gray-600 w-2/3 "/>
+         </>
+         
         : <><Link to="/login" className="my-1">Login</Link>
          <hr className="border-2 border-gray-600 w-2/3"/>
         <Link to="/register"className='my-1'>Register</Link>
         </>
         }
-        
+        {user && <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover"src={PF+user.profile} alt="Loading..."/></Link>}
        </ul>
        </div>
         :
