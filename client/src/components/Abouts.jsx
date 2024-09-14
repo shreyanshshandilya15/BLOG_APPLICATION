@@ -31,7 +31,7 @@ export default function Abouts() {
         <hr className="border-t-2 border-gray-400 w-full my-1" />
         <div className="text-center text-xl">ABOUT ME</div>
         <hr className="border-t-2 border-gray-400 w-full my-1"/>
-        <img className="mx-auto my-3 h-60 w-52 object-cover"src={PF+user.profile}alt="" />
+        <img className="mx-auto my-3 h-60 w-52 object-cover"src="/assets/aboutme.jpg" alt="" />
         <div className="text-center text-xl ">Lorem ipsum dolor sit amet, 
         consectetur adipisicing elit.
          Amet quos velit magnam?</div>

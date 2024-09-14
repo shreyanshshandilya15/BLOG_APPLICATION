@@ -32,7 +32,7 @@ export default function Home() {
       <div className="hidden lg:block">
        <Navbar />
        <Slider />
-       <div className="flex flex-col gap-10 mx-8 lg:flex-row ">
+       <div className="flex gap-10 mx-8 flex-row ">
         <Posts posts={posts}/>
         <div className="">
         <Abouts/>

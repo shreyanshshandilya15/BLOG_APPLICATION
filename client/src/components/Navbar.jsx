@@ -25,7 +25,7 @@ export default function Navbar() {
        </ul>
        <article className='flex items-center gap-2 text-xl'>
         {user ? <>
-          <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover"src={PF+user.profile} alt="Loading..."/></Link>
+          <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover" src={user && PF+user.profile} alt='set'/></Link>
           <i className="fa-solid fa-magnifying-glass"></i> 
         </>  :
         <>

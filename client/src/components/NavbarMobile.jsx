@@ -37,14 +37,14 @@ export default function NavbarMobile() {
         <hr className="border-2 border-gray-600 w-2/3"/>
         {user ? <><Link to="/register" onClick={handlelogout} className="my-1">{user && "LOGOUT"}</Link>
          <hr className="border-2 border-gray-600 w-2/3 "/>
+         <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover"src={user && PF+user.profile } alt="Set"/></Link>
          </>
-         
         : <><Link to="/login" className="my-1">Login</Link>
          <hr className="border-2 border-gray-600 w-2/3"/>
         <Link to="/register"className='my-1'>Register</Link>
         </>
         }
-        {user && <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover"src={PF+user.profile} alt="Loading..."/></Link>}
+        
        </ul>
        </div>
         :
