@@ -13,7 +13,16 @@ export default function Card({post}) {
        })}
       <div className="text-center text-bold text-xl my-2">{post.title}</div>
        <div className="text-center text-xs text-gray-500 my-1">{new Date(post.createdAt).toDateString()}</div>
-       <div className="text-center justify-center mx-2 align-middle">{post.description}</div>
+       <div className="text-center justify-center mx-2 align-middle">
+       {post.description.length > 250 ? (
+        <>
+          {post.description.slice(0, 250)}... 
+          <Link to={`/post/${post._id}`} className="text-gray-400 decoration-none">Read More</Link>
+        </>
+      ) : (
+        post.description
+      )}
+       </div>
     </div>
     </Link>
   )
