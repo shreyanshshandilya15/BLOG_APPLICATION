@@ -9,14 +9,14 @@ export default function Navbar() {
          dispatch({type:"LOGOUT"});
    }
   return (
-    <div className='flex justify-between items-center my-4'>
-       <article className='flex gap-4 text-xl m-4'>
+    <div className='flex justify-between items-center m-4 mt-3'>
+       <article className='flex gap-8 text-xl '>
        <a href=""><i className="fa-brands fa-facebook"></i></a>
        <a href=""><i className="fa-brands fa-instagram"></i></a>
        <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
        <a href=""><i className="fa-brands fa-pix"></i></a>
        </article>
-       <ul className='flex gap-3 m-4'>
+       <ul className='flex gap-3'>
         <Link to="/">HOME</Link>
         <Link to="/about">ABOUT</Link>
         <Link to="/contact">CONTACT</Link>

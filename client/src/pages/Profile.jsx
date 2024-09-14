@@ -57,9 +57,9 @@ export default function Profile() {
             <div className="block lg:hidden">
              <NavbarMobile />
              </div>
-            <div className="flex sm:flex-col lg:flex-row lg:justify-between lg:mx-36 sm:mx-10">
+            <div className="flex sm:flex-col lg:flex-row lg:justify-between lg:mx-36 sm:mx-10 items-center">
                 <div className="flex-grow-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-52">
                     <span className="text-xl text-yellow-600">Update Your Account</span>
                     <span className=" text-red-600">Delete Account</span>
                     </div>
