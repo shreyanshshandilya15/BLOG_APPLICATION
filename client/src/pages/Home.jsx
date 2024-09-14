@@ -33,8 +33,10 @@ export default function Home() {
        <Navbar />
        <Slider />
        <div className="flex gap-10 mx-8 flex-row ">
-        <Posts posts={posts}/>
-        <div className="">
+       <div className="flex-grow min-w-[300px]"> 
+       <Posts posts={posts}/>
+       </div>
+        <div className="flex-shrink-0 w-[300px]">
         <Abouts/>
         </div>
        </div>
@@ -42,7 +44,7 @@ export default function Home() {
       <div className="block lg:hidden">
        <NavbarMobile />
       <Slider />
-       <div className="flex flex-col gap-10 mx-8 sm:flex-col ">
+       <div className="flex  gap-10 mx-8 sm:flex-col ">
         <Posts posts={posts}/>
         <div className="">
         <Abouts/>
