@@ -44,7 +44,7 @@ export default function Home() {
       <div className="block lg:hidden">
        <NavbarMobile />
       <Slider />
-       <div className="flex  gap-10 mx-8 sm:flex-col ">
+       <div className="flex gap-10 mx-8 flex-col ">
         <Posts posts={posts}/>
         <div className="">
         <Abouts/>
