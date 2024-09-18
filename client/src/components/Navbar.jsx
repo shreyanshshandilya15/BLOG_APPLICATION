@@ -27,8 +27,8 @@ export default function Navbar() {
        </article>
        <ul className='flex gap-3'>
         <Link to="/">HOME</Link>
-        <Link to="/about">ABOUT</Link>
-        <Link to="/contact">CONTACT</Link>
+        ABOUT
+        CONTACT
         <Link to="/create">WRITE</Link>
         <Link to="/register" onClick={handlelogout}>{user && "LOGOUT"}</Link>
        </ul>

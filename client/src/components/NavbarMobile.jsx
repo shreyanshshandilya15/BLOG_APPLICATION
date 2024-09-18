@@ -37,9 +37,9 @@ export default function NavbarMobile() {
        <ul className='flex flex-col gap-4 items-center'>
         <Link to="/">HOME</Link>
         <hr className="border-2 border-gray-600 w-2/3"/>
-        <Link to="/about" className="my-1 ">ABOUT</Link>
+        <Link className="my-1 ">ABOUT</Link>
         <hr className="border-2 border-gray-600 w-2/3"/>
-        <Link to="/contact" className="my-1 ">CONTACT</Link>
+        <Link className="my-1 ">CONTACT</Link>
         <hr className="border-2 border-gray-600 w-2/3"/>
         <Link to="/create" className="my-1">WRITE</Link>
         <hr className="border-2 border-gray-600 w-2/3"/>
