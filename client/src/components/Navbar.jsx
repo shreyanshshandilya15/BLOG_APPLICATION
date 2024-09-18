@@ -1,13 +1,22 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Context } from '../context/Context';
+import { auth } from './firebase';
+import { signOut } from 'firebase/auth';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
    const {user,dispatch}=useContext(Context);
    const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`
-   const handlelogout=()=>{
+   const handlelogout=async()=>{
+         await auth.signOut();
          dispatch({type:"LOGOUT"});
+         toast.success("Logged out successfully !");
+         setTimeout(()=>{ 
+         window.location.href="/register";
+         },5000);
    }
+
   return (
     <div className='flex justify-between items-center m-4 mt-3'>
        <article className='flex gap-8 text-xl '>

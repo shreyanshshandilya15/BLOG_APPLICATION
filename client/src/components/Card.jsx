@@ -17,7 +17,7 @@ export default function Card({post}) {
        {post.description.length > 250 ? (
         <>
           {post.description.slice(0, 250)}... 
-          <Link to={`/post/${post._id}`} className="text-gray-400 decoration-none">Read More</Link>
+          <span className="text-gray-400 decoration-none">Read More</span>
         </>
       ) : (
         post.description

@@ -2,13 +2,21 @@ import { useState } from "react";
 import { useContext } from "react";
 import { Context } from '../context/Context';
 import { Link } from "react-router-dom";
+import { auth } from "./firebase";
+import toast from "react-hot-toast";
+import { signOut } from "firebase/auth";
 
 export default function NavbarMobile() {
      const [shownav,setShowNav]=useState(false);
      const {user,dispatch}=useContext(Context);
     const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`
-     const handlelogout=()=>{
-        dispatch({type:"LOGOUT"});
+     const handlelogout=async()=>{
+      await auth.signOut();
+      dispatch({type:"LOGOUT"});
+      toast.success("Logged out successfully !");
+         setTimeout(()=>{ 
+         window.location.href="/register";
+         },5000);
      }
      const handlenav=()=>{
         setShowNav(prev=>!prev);
