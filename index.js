@@ -1,15 +1,15 @@
-import express from "express";
+import express from "express";                                                                          
 import multer from "multer";
 import { connectDB } from "./data/database.js";
-import dotenv from "dotenv"
-import AuthRoutes from "./routes/auth.js"
-import UserRoutes from "./routes/users.js"
-import PostRoutes from "./routes/posts.js"
-import CategoryRoutes from "./routes/categories.js"
-import path from "path"
+import dotenv from "dotenv";
+import AuthRoutes from "./routes/auth.js";
+import UserRoutes from "./routes/users.js";
+import PostRoutes from "./routes/posts.js";
+import CategoryRoutes from "./routes/categories.js";
+import path from "path";
 import cors from "cors";
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname } from 'path'; 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname= path.dirname(__filename);

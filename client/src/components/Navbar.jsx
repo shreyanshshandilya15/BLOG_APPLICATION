@@ -29,7 +29,7 @@ export default function Navbar() {
         <Link to="/">HOME</Link>
         ABOUT
         CONTACT
-        <Link to="/create">WRITE</Link>
+        <Link to="/create">COMPOSE</Link>
         <Link to="/register" onClick={handlelogout}>{user && "LOGOUT"}</Link>
        </ul>
        <article className='flex items-center gap-2 text-xl'>
@@ -38,8 +38,9 @@ export default function Navbar() {
           <i className="fa-solid fa-magnifying-glass"></i> 
         </>  :
         <>
-          <Link to="/login">Login</Link>
-          <Link to="/register"className=''>Register</Link>
+          <Link to="/login">LOGIN</Link>
+          |
+          <Link to="/register"className=''>REGISTER</Link>
        </>
        }
        </article>
