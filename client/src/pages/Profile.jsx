@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import NavbarMobile from "../components/NavbarMobile.jsx";
  
 export default function Profile() {
-    const { user ,dispatch} = useContext(Context);
+    const { user, dispatch } = useContext(Context);
     const [file, setFile] = useState("");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -31,83 +31,136 @@ export default function Profile() {
             try {
                 await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, data);
             } catch (error) {
-                toast.error("Error occured while uploading informations");
+                toast.error("Error occurred while uploading information");
             } try {
-                const res=await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${user._id}`, updatedUser);
-                //  <Navigate to={"/post/"+res.data._id}/>
-                //  window.location.replace("/post/"+res.data._id);
-                //  console.log(res.data);
-                console.log(res.data);
-                dispatch({type:"UPDATE_SUCCESS",payload:res.data});
+                const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${user._id}`, updatedUser);
+                dispatch({type:"UPDATE_SUCCESS", payload:res.data});
                 window.location.reload();
-                toast.success("user profile has been updated !");
+                toast.success("User profile has been updated!");
             } catch (err) {
                 dispatch({type:"UPDATE_FAILURE"});
-                toast.error("Fill other details too!");
+                toast.error("Please fill all required details!");
                 console.log(err);
             }
         }
     }
 
     return (
-        <div>
-             <div className="hidden lg:block">
-            <Navbar/>
+        <div className="min-h-screen bg-gray-50">
+            <div className="hidden lg:block">
+                <Navbar/>
             </div>
             <div className="block lg:hidden">
-             <NavbarMobile />
-             </div>
-            <div className="flex sm:flex-col lg:flex-row lg:justify-between lg:mx-36 sm:mx-10 items-center">
-                <div className="flex-grow-2">
-                    <div className="flex items-center gap-52">
-                    <span className="text-xl text-yellow-600">Update Your Account</span>
-                    <span className=" text-red-600">Delete Account</span>
+                <NavbarMobile />
+            </div>
+            
+            {/* Main Container */}
+            <div className="container mx-auto px-4 sm:px-6 py-6 lg:py-8">
+                {/* Profile Grid Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-8">
+                        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+                            {/* Header Section */}
+                            <div className="p-6 border-b border-gray-200">
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                    <h1 className="text-2xl font-semibold text-gray-800">Profile Settings</h1>
+                                    <button className="text-red-600 hover:text-red-800 font-medium flex items-center gap-2">
+                                        <i className="fas fa-trash-alt"></i>
+                                        <span>Delete Account</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Profile Form */}
+                            <form onSubmit={handlesubmit} className="p-6">
+                                {/* Profile Picture Section */}
+                                <div className="flex flex-col items-center space-y-4 mb-8">
+                                    <div className="relative">
+                                        <img 
+                                            src={file ? URL.createObjectURL(file) : PF+user.profile} 
+                                            className="h-32 w-32 sm:h-40 sm:w-40 rounded-full object-cover border-4 border-white shadow-lg" 
+                                            alt="Profile" 
+                                        />
+                                        <label 
+                                            htmlFor="addtitle" 
+                                            className="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-2 sm:p-3 cursor-pointer hover:bg-green-600 transition-colors shadow-md"
+                                        >
+                                            <i className="fa-regular fa-square-plus text-lg sm:text-xl"></i>
+                                        </label>
+                                    </div>
+                                    <input
+                                        type="file"
+                                        className="hidden"
+                                        id="addtitle"
+                                        onChange={(e) => setFile(e.target.files[0])}
+                                        accept="image/*"
+                                    />
+                                    <p className="text-sm text-gray-500">Click the plus icon to change profile picture</p>
+                                </div>
+
+                                {/* Form Fields */}
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Username
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                                placeholder={user.name}
+                                                onChange={(e)=>setName(e.target.value)}
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Email
+                                            </label>
+                                            <input 
+                                                type="email" 
+                                                placeholder={user.email}
+                                                onChange={(e)=>setEmail(e.target.value)}
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            New Password
+                                        </label>
+                                        <input 
+                                            type="password" 
+                                            placeholder="Enter new password"
+                                            onChange={(e)=>setPassword(e.target.value)}
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
+                                        />
+                                        <p className="mt-1 text-sm text-gray-500">Leave blank to keep current password</p>
+                                    </div>
+                                </div>
+
+                                {/* Submit Button */}
+                                <div className="mt-8 flex justify-end">
+                                    <button 
+                                        type="submit"
+                                        className="w-full sm:w-auto px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors flex items-center justify-center gap-2"
+                                    >
+                                        <i className="fas fa-save"></i>
+                                        <span>Update Profile</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <form action="" onSubmit={handlesubmit}>
-                        <div className="my-2 text-blue-500">Profile Picture</div>
-                        <img src={file ? URL.createObjectURL(file) : PF+user.profile} className="h-28 my-4 w-28 object-cover " alt="" />
-                        <label htmlFor="addtitle">
-                            <i className="text-green-500 mr-2 text-2xl fa-regular mx-2 fa-square-plus"></i>
-                        </label>
-                        <input
-                            type="file"
-                            className="hidden mx-4"
-                            name=""
-                            id="addtitle"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                        <div className="my-2 text-2xl">Username</div>
-                        <input 
-                             type="text" 
-                             name="" 
-                             id="" 
-                             placeholder={user.name}
-                             onChange={(e)=>setName(e.target.value)}
-                             className="border-b-2 "
-                        />
-                        <div className="my-2 text-2xl">Email</div>
-                        <input 
-                             type="email" 
-                             name="" 
-                             placeholder= {user.email} 
-                             onChange={(e)=>setEmail(e.target.value)} 
-                             id=""
-                             className="border-b-2" 
-                        />
-                        <div className="my-2 text-2xl">Password</div>
-                        <input 
-                            type="password" 
-                            className="my-2 border-b-2" 
-                            name="" 
-                            id="" 
-                            onChange={(e)=>setPassword(e.target.value)}
-                        />
-                        <div></div>
-                        <button className="text-white bg-green-900 w-20 rounded p-2" type="submit">Update</button>
-                    </form>
-                </div>
-                <div className="flex-grow-1">
-                    <Abouts />
+
+                    {/* Sidebar */}
+                    <div className="lg:col-span-4">
+                        <div className="sticky top-6">
+                            <Abouts />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
