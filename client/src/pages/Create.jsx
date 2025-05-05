@@ -1,105 +1,163 @@
 import { useContext, useState } from "react"
-import Navbar from "../components/Navbar"
 import { Context } from "../context/Context";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import NavbarMobile from "../components/NavbarMobile";
 import toast from "react-hot-toast";
 
-
 export default function Create() {
- 
-  const {user}=useContext(Context);
-  const [file,setFile]=useState("");
-  const [title,setTitle]=useState("");
-  const [desc,setDesc]=useState("");
-  
-  const handlesubmit=async(e)=>{
-      e.preventDefault();
-      const newPost={
-        author:user.name,
-        title,
-        description:desc
-      };
+    const [title, setTitle] = useState("");
+    const [desc, setDesc] = useState("");
+    const [file, setFile] = useState(null);
+    const [category, setCategory] = useState("General");
+    const { user } = useContext(Context);
+    const navigate = useNavigate();
+    const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`;
 
-      if(file){
-        const data=new FormData();
-        const filename=Date.now()+file.name;
-        data.append("name",filename);
-        data.append("file",file);
-        newPost.photo=filename;
-        try{
-           await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`,data);
-        }catch(err){
-           console.log(console.log(err));
-        }try{
-          const res=await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/create`,newPost);
-        //  <Navigate to={"/post/"+res.data._id}/>
-        //  window.location.replace("/post/"+res.data._id);
-        //  console.log(res.data);
-        if (res.data && res.data._id) {
-          window.location.replace("/post/" + res.data._id);
-          toast.success("Post Created Successfully !");
-        } else {
-          console.log("Error: _id not found in response");
-          toast.error("Error occured in creating Post");
+    const categories = [
+        { value: 'Food', label: 'Food' },
+        { value: 'Travel', label: 'Travel' },
+        { value: 'Lifestyle', label: 'Lifestyle' },
+        { value: 'Finance', label: 'Finance' },
+        { value: 'Business', label: 'Business' },
+        { value: 'Entertainment', label: 'Entertainment' },
+        { value: 'General', label: 'General' }
+    ];
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!title || !desc) {
+            toast.error("Please fill in all required fields");
+            return;
         }
-        }catch(err){
-          console.log(err);
+
+        if (!user) {
+            toast.error("Please login to create a post");
+            return;
         }
-      } 
-  }
-  
-  return (
-    <div className="h-screen flex flex-col">
-      <Navbar />
-      <div className="flex-grow flex flex-col items-center justify-center">
-        <form className="w-full max-w-lg flex flex-col items-center" onSubmit={handlesubmit}>
-         {file && <img
-            src={URL.createObjectURL(file)}
-            className="h-screen/5 w-full object-cover mb-2"
-            alt=""
-          /> } 
-          <div className="w-full px-4">
-            <div className="flex items-center mb-4">
-              <label htmlFor="addtitle">
-                <i className="text-green-500 mr-2 text-2xl fa-regular mx-2 fa-square-plus"></i>
-              </label>
-              <input
-                type="file"
-                className="hidden mx-4"
-                name=""
-                id="addtitle"
-                onChange={(e)=>setFile(e.target.files[0])}
-              />
-              <input
-                type="text"
-                className="py-5 px-2 text-2xl w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                name="title"
-                placeholder="Title..."
-                id="addtitle"
-                onChange={(e)=>setTitle(e.target.value)}
-              />
+
+        const newPost = {
+            title,
+            desc,
+            username: user.username || user.name, // Use username or fallback to name
+            author: user.name,
+            categories: category
+        };
+
+        if (file) {
+            const data = new FormData();
+            const filename = Date.now() + file.name;
+            data.append("name", filename);
+            data.append("file", file);
+            newPost.photo = filename;
+            try {
+                await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, data);
+            } catch (err) {
+                console.error("Error uploading image:", err);
+                toast.error("Error uploading image");
+                return;
+            }
+        }
+
+        try {
+            console.log("Sending post data:", newPost); // Debug log
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/create`, newPost);
+            if (res.status === 201) {
+                toast.success("Post created successfully!");
+                navigate(`/post/${res.data._id}`);
+            } else {
+                throw new Error("Unexpected response from server");
+            }
+        } catch (err) {
+            console.error("Error creating post:", err);
+            if (err.response?.data?.message) {
+                toast.error(err.response.data.message);
+            } else if (err.response?.data?.error) {
+                toast.error(err.response.data.error);
+            } else {
+                toast.error("Error creating post. Please try again.");
+            }
+        }
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50">
+            <div className="hidden lg:block">
+                <Navbar />
             </div>
-            <textarea
-              name="content"
-              id=""
-              cols="30"
-              rows="3" // Set initial number of rows to display
-              className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
-              style={{ minHeight: '3rem' }} 
-              onChange={(e)=>setDesc(e.target.value)}
-              // Set minimum height to ensure the text area is always visible
-            ></textarea>
-            <div className="mt-4">
-              <button
-                type="submit"
-                className="bg-green-800 text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 w-full"
-              >
-                Publish
-              </button>
+            <div className="block lg:hidden">
+                <NavbarMobile />
             </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
+            <div className="container mx-auto px-4 py-8">
+                <div className="max-w-4xl mx-auto">
+                    <div className="bg-white rounded-lg shadow-lg p-6">
+                        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Create a New Post</h1>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Title *
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter post title"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Category
+                                </label>
+                                <select
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value)}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    {categories.map((cat) => (
+                                        <option key={cat.value} value={cat.value}>
+                                            {cat.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Description *
+                                </label>
+                                <textarea
+                                    placeholder="Write your post content here..."
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[200px]"
+                                    onChange={(e) => setDesc(e.target.value)}
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Upload Image (Optional)
+                                </label>
+                                <input
+                                    type="file"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                    accept="image/*"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            >
+                                Publish Post
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

@@ -40,7 +40,6 @@ export default function Profile() {
             userId: user._id,
             name, email, password
         };
-
         if (file) {
             const data = new FormData();
             const filename = Date.now() + file.name;
@@ -49,144 +48,109 @@ export default function Profile() {
             updatedUser.profile = filename;
             try {
                 await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/upload`, data);
-            } catch (error) {
-                toast.error("Error occurred while uploading information");
-            } try {
-                const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/${user._id}`, updatedUser);
-                dispatch({type:"UPDATE_SUCCESS", payload:res.data});
-                window.location.reload();
-                toast.success("User profile has been updated!");
             } catch (err) {
-                dispatch({type:"UPDATE_FAILURE"});
-                toast.error("Please fill all required details!");
                 console.log(err);
             }
         }
-    }
+        try {
+            const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/update`, updatedUser);
+            dispatch({type:"UPDATE_SUCCESS", payload:res.data});
+            toast.success("Profile updated successfully!");
+        } catch (err) {
+            dispatch({type:"UPDATE_FAILURE"});
+            toast.error("Failed to update profile!");
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="hidden lg:block">
-                <Navbar/>
+                <Navbar />
             </div>
             <div className="block lg:hidden">
                 <NavbarMobile />
             </div>
-            
-            {/* Main Container */}
-            <div className="container mx-auto px-4 sm:px-6 py-6 lg:py-8">
-                {/* Profile Grid Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-                    {/* Main Content Area */}
+
+            <div className="container mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* Main Content */}
                     <div className="lg:col-span-8">
-                        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-                            {/* Header Section */}
-                            <div className="p-6 border-b border-gray-200">
-                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                    <div>
-                                        <h1 className="text-2xl font-semibold text-gray-800">Profile Settings</h1>
-                                        <div className="mt-2 flex items-center gap-4">
-                                            <div className="flex items-center gap-2 text-gray-600">
-                                                <i className="fas fa-pen-fancy"></i>
-                                                <span>{postCount} {postCount === 1 ? 'Post' : 'Posts'}</span>
-                                            </div>
-                                            {postCount > 0 && (
-                                                <button 
-                                                    onClick={() => setShowPostsModal(true)}
-                                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
-                                                >
-                                                    <i className="fas fa-eye"></i>
-                                                    <span>View All Posts</span>
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <button className="text-red-600 hover:text-red-800 font-medium flex items-center gap-2">
-                                        <i className="fas fa-trash-alt"></i>
-                                        <span>Delete Account</span>
-                                    </button>
-                                </div>
+                        <div className="bg-white rounded-lg shadow-md p-6">
+                            <div className="flex items-center justify-between mb-6">
+                                <h1 className="text-2xl font-semibold text-gray-800">Your Profile</h1>
+                                <button
+                                    onClick={() => setShowPostsModal(true)}
+                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                                >
+                                    View All Posts ({postCount})
+                                </button>
                             </div>
 
-                            {/* Profile Form */}
-                            <form onSubmit={handlesubmit} className="p-6">
-                                {/* Profile Picture Section */}
-                                <div className="flex flex-col items-center space-y-4 mb-8">
+                            <form onSubmit={handlesubmit} className="space-y-6">
+                                <div className="flex items-center space-x-4">
                                     <div className="relative">
-                                        <img 
-                                            src={file ? URL.createObjectURL(file) : PF+user.profile} 
-                                            className="h-32 w-32 sm:h-40 sm:w-40 rounded-full object-cover border-4 border-white shadow-lg" 
-                                            alt="Profile" 
+                                        <img
+                                            src={user.profile ? (user.profile.includes('googleusercontent.com') ? user.profile : PF + user.profile) : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666666'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"}
+                                            alt="Profile"
+                                            className="w-24 h-24 rounded-full object-cover"
                                         />
-                                        <label 
-                                            htmlFor="addtitle" 
-                                            className="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-2 sm:p-3 cursor-pointer hover:bg-green-600 transition-colors shadow-md"
-                                        >
-                                            <i className="fa-regular fa-square-plus text-lg sm:text-xl"></i>
+                                        <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full cursor-pointer">
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                onChange={(e) => setFile(e.target.files[0])}
+                                            />
+                                            <i className="fas fa-camera"></i>
                                         </label>
                                     </div>
-                                    <input
-                                        type="file"
-                                        className="hidden"
-                                        id="addtitle"
-                                        onChange={(e) => setFile(e.target.files[0])}
-                                        accept="image/*"
-                                    />
-                                    <p className="text-sm text-gray-500">Click the plus icon to change profile picture</p>
-                                </div>
-
-                                {/* Form Fields */}
-                                <div className="space-y-6">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Username
-                                            </label>
-                                            <input 
-                                                type="text" 
-                                                placeholder={user.name}
-                                                onChange={(e)=>setName(e.target.value)}
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                Email
-                                            </label>
-                                            <input 
-                                                type="email" 
-                                                placeholder={user.email}
-                                                onChange={(e)=>setEmail(e.target.value)}
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
-                                            />
-                                        </div>
-                                    </div>
-
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            New Password
-                                        </label>
-                                        <input 
-                                            type="password" 
-                                            placeholder="Enter new password"
-                                            onChange={(e)=>setPassword(e.target.value)}
-                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors"
-                                        />
-                                        <p className="mt-1 text-sm text-gray-500">Leave blank to keep current password</p>
+                                        <h2 className="text-xl font-semibold">{user.name}</h2>
+                                        <p className="text-gray-600">{user.email}</p>
                                     </div>
                                 </div>
 
-                                {/* Submit Button */}
-                                <div className="mt-8 flex justify-end">
-                                    <button 
-                                        type="submit"
-                                        className="w-full sm:w-auto px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors flex items-center justify-center gap-2"
-                                    >
-                                        <i className="fas fa-save"></i>
-                                        <span>Update Profile</span>
-                                    </button>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your name"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
                                 </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Email
+                                    </label>
+                                    <input
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        placeholder="Enter new password"
+                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                >
+                                    Update Profile
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -219,6 +183,13 @@ export default function Profile() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {userPosts.map((post) => (
                                     <div key={post._id} className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        {post.photo && (
+                                            <img
+                                                src={PF + post.photo}
+                                                alt={post.title}
+                                                className="w-full h-48 object-cover rounded-lg mb-4"
+                                            />
+                                        )}
                                         <div className="flex justify-between items-start mb-2">
                                             <h3 className="text-lg font-medium text-gray-800">{post.title}</h3>
                                             <span className="text-sm text-gray-500">
@@ -227,13 +198,9 @@ export default function Profile() {
                                         </div>
                                         <p className="text-gray-600 mb-4 line-clamp-3">{post.desc}</p>
                                         <div className="flex justify-between items-center">
-                                            <div className="flex gap-2">
-                                                {post.categories.map((cat) => (
-                                                    <span key={cat} className="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
-                                                        {cat}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                            <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                                {post.categories}
+                                            </span>
                                             <Link 
                                                 to={`/post/${post._id}`}
                                                 className="text-blue-600 hover:text-blue-800 text-sm font-medium"
@@ -249,5 +216,5 @@ export default function Profile() {
                 </div>
             )}
         </div>
-    )
+    );
 }

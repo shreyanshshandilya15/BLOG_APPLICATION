@@ -5,13 +5,34 @@ const router=express.Router();
 
 //create-post
 router.post("/create",async(req,res)=>{
-    const newpost=new Post(req.body);
-    try{
-      const savedpost=await newpost.save();
-      res.status(200).json(savedpost);
-    }catch(err){
-        console.log(err);
-        res.status(500).json({message:"error creating post",error:err});
+    try {
+        const { title, desc, username, author, categories, photo } = req.body;
+        
+        // Validate required fields
+        if (!title || !desc || !username || !author) {
+            return res.status(400).json({ 
+                message: "Missing required fields",
+                error: "Title, description, username, and author are required"
+            });
+        }
+
+        const newPost = new Post({
+            title,
+            desc,
+            username,
+            author,
+            categories: categories || 'General',
+            photo: photo || ''
+        });
+
+        const savedPost = await newPost.save();
+        res.status(201).json(savedPost);
+    } catch (err) {
+        console.error("Error creating post:", err);
+        res.status(500).json({ 
+            message: "Error creating post",
+            error: err.message 
+        });
     }
 });
 

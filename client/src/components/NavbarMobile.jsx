@@ -18,9 +18,6 @@ export default function NavbarMobile() {
          window.location.href="/register";
          },5000);
      }
-     const handlenav=()=>{
-        setShowNav(prev=>!prev);
-     }
 
      const getProfileImage = () => {
        if (!user) return null;
@@ -38,63 +35,62 @@ export default function NavbarMobile() {
 
   return (
     <div>
-      <div className='flex justify-between items-center m-4 mt-3'>
-        <article className='flex gap-8 text-xl '>
-          <a href=""><i className="fa-brands fa-facebook"></i></a>
-          <a href=""><i className="fa-brands fa-instagram"></i></a>
-          <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
-          <a href=""><i className="fa-brands fa-pix"></i></a>
-        </article>
-        <article className='flex items-center gap-2 text-xl'>
+      <div className='flex justify-between items-center px-4 py-3'>
+        <div className="flex-1 flex justify-center">
+          <button onClick={() => setShowNav(prev => !prev)} className="text-2xl">
+            <i className="fa-solid fa-bars"></i>
+          </button>
+        </div>
+        
+        <div className="flex-1 flex justify-center">
+          <article className='flex gap-4 text-xl'>
+            <a href=""><i className="fa-brands fa-facebook"></i></a>
+            <a href=""><i className="fa-brands fa-instagram"></i></a>
+            <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
+            <a href=""><i className="fa-brands fa-pix"></i></a>
+          </article>
+        </div>
+
+        <div className="flex-1 flex justify-center">
+          <article className='flex items-center gap-2 text-xl'>
+            {!user && (
+              <>
+                <Link to="/login">LOGIN</Link>
+                |
+                <Link to="/register" className="">REGISTER</Link>
+              </>
+            )}
+          </article>
+        </div>
+      </div>
+      
+      <div className={`fixed top-0 right-0 w-64 h-full bg-white transform transition-transform duration-300 ${shownav ? 'translate-x-0' : 'translate-x-full'}`}>
+        <button onClick={() => setShowNav(prev => !prev)} className="absolute top-4 right-4 text-2xl">
+          <i className="fa-solid fa-xmark"></i>
+        </button>
+        <ul className="flex flex-col items-center justify-center h-full gap-4 text-xl">
+          <Link to="/" className="my-1">HOME</Link>
+          <hr className="border-2 border-gray-600 w-2/3" />
+          <Link to="/about" className="my-1">ABOUT</Link>
+          <hr className="border-2 border-gray-600 w-2/3" />
+          <Link to="/contact" className="my-1">CONTACT</Link>
+          <hr className="border-2 border-gray-600 w-2/3" />
+          <Link to="/create" className="my-1">COMPOSE</Link>
+          <hr className="border-2 border-gray-600 w-2/3" />
           {user ? (
             <>
-              <Link to="/profile">
-                <img className="h-12 w-12 rounded-full object-cover" src={getProfileImage()} alt={user.name || 'Profile'} />
-              </Link>
-              <i className="fa-solid fa-magnifying-glass"></i>
+              <Link to="/register" onClick={handlelogout} className="my-1">LOGOUT</Link>
+              <hr className="border-2 border-gray-600 w-2/3" />
             </>
           ) : (
             <>
-              <Link to="/login">LOGIN</Link>
-              |
-              <Link to="/register" className="">REGISTER</Link>
+              <Link to="/login" className="my-1">LOGIN</Link>
+              <hr className="border-2 border-gray-600 w-2/3" />
+              <Link to="/register" className="my-1">REGISTER</Link>
             </>
           )}
-        </article>
-        <button onClick={() => setShowNav(prev => !prev)} className="text-2xl">
-          <i className="fa-solid fa-bars"></i>
-        </button>
-      </div>
-      <div className={`fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 transition-opacity duration-300 ${shownav ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className={`fixed top-0 right-0 w-64 h-full bg-white transform transition-transform duration-300 ${shownav ? 'translate-x-0' : 'translate-x-full'}`}>
-          <button onClick={() => setShowNav(prev => !prev)} className="absolute top-4 right-4 text-2xl">
-            <i className="fa-solid fa-xmark"></i>
-          </button>
-          <ul className="flex flex-col items-center justify-center h-full gap-4 text-xl">
-            <Link to="/" className="my-1">HOME</Link>
-            <hr className="border-2 border-gray-600 w-2/3" />
-            <Link to="/about" className="my-1">ABOUT</Link>
-            <hr className="border-2 border-gray-600 w-2/3" />
-            <Link to="/create" className="my-1">COMPOSE</Link>
-            <hr className="border-2 border-gray-600 w-2/3" />
-            {user ? (
-              <>
-                <Link to="/register" onClick={handlelogout} className="my-1">{user && "LOGOUT"}</Link>
-                <hr className="border-2 border-gray-600 w-2/3" />
-                <Link to="/profile">
-                  <img className="h-12 w-12 rounded-full object-cover" src={getProfileImage()} alt={user.name || 'Profile'} />
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="my-1">LOGIN</Link>
-                <hr className="border-2 border-gray-600 w-2/3" />
-                <Link to="/register" className="my-1">REGISTER</Link>
-              </>
-            )}
-          </ul>
-        </div>
+        </ul>
       </div>
     </div>
-  )
+  );
 }

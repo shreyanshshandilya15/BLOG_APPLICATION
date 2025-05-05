@@ -6,6 +6,7 @@ import Post from "./pages/Post"
 import Profile from "./pages/Profile"
 import Create from "./pages/Create"
 import About from "./pages/About"
+import Contact from "./pages/Contact"
 import { useContext } from "react"
 import { Context } from "./context/Context"
 import { Toaster } from "react-hot-toast"
@@ -24,6 +25,7 @@ function App() {
       <Route path="/profile" element={user ? <Profile/> : <Register/>}/>
       <Route path="/create" element={user ? <Create/> : <Register/> }/>
       <Route path="/about" element={<About/>}/>
+      <Route path="/contact" element={<Contact />} />
      </Routes>
      </Router>
     </>

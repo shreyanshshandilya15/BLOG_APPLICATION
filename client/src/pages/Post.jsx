@@ -30,7 +30,6 @@ export default function Post() {
       setPost(respost);
       setTitle(respost.title);
       setDesc(respost.description);
-
     }catch(err){
       console.error("error fetching post:",err);
     }
@@ -62,66 +61,131 @@ export default function Post() {
       console.log(err.response);
       toast.error("some error occured !");
     }
- };
- 
+  };
+
   return (
-    <div className="">
+    <div className="min-h-screen bg-gray-50">
       <div className="hidden lg:block">
-      <Navbar/>
+        <Navbar/>
       </div>
       <div className="block lg:hidden">
         <NavbarMobile />
       </div>
-      <div className="flex flex-col gap-10 justify-center mx-8 lg:flex-row">
-        <div className="flex-grow-3 max-h-full">
-          {post.photo && 
-          <img 
-             src={PF + post.photo} 
-             alt="oops" 
-             className=" rounded-xl object-cover w-full my-3 object-cover" 
-             style={{ maxHeight: "calc(100vh / 3)" }} 
-             />
-             }
-          {updateMode ? 
-          <input 
-             type="text" 
-             onChange={(e)=>setTitle(e.target.value)} 
-             value={title} 
-             className="py-5 px-2 text-2xl w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" 
-             /> :
-            <><h2 
-                 className="text-black-700 text-3xl text-center ">
-                  {post.title}
-                  </h2>
-              {post.author === user?.name && <>
-                <i onClick={() => setUpdateMode(true)} className="fa-regular fa-pen-to-square mx-2 text-blue-500 "></i>
-                <i onClick={handledelete} className="fa-solid fa-trash text-red-500"></i>
-              </>}
-            </>
-          }
-          <div className="flex justify-between my-2 text-yellow-600">
-            <span className="my-3">Author:<Link to={`/?user=${post.author}`}>{post.author}</Link></span>
-            <span className="my-2">{new Date(post.createdAt).toDateString()}</span>
+      
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            {/* Post Image */}
+            {post.photo && (
+              <div className="relative w-full h-64 md:h-96 overflow-hidden">
+                <img 
+                  src={PF + post.photo} 
+                  alt={post.title} 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
+            {/* Post Content */}
+            <div className="p-6 md:p-8">
+              {/* Title and Actions */}
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+                {updateMode ? (
+                  <input 
+                    type="text" 
+                    onChange={(e)=>setTitle(e.target.value)} 
+                    value={title} 
+                    className="text-2xl md:text-3xl font-bold w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500" 
+                  />
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+                      {post.title}
+                    </h2>
+                    {post.author === user?.name && (
+                      <div className="flex gap-3">
+                        <button 
+                          onClick={() => setUpdateMode(true)} 
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <i className="fa-regular fa-pen-to-square text-xl"></i>
+                        </button>
+                        <button 
+                          onClick={handledelete} 
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <i className="fa-solid fa-trash text-xl"></i>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Author and Date */}
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 text-gray-600">
+                <div className="flex items-center gap-2 mb-2 md:mb-0">
+                  <span className="font-medium">Author:</span>
+                  <Link 
+                    to={`/?user=${post.author}`}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    {post.author}
+                  </Link>
+                </div>
+                <span className="text-sm">
+                  {new Date(post.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+
+              {/* Category */}
+              {post.categories && (
+                <div className="mb-6">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                    {post.categories}
+                  </span>
+                </div>
+              )}
+
+              {/* Description */}
+              <div className="prose max-w-none">
+                {updateMode ? (
+                  <textarea 
+                    value={desc} 
+                    onChange={(e)=>setDesc(e.target.value)} 
+                    className="w-full border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none min-h-[200px]" 
+                  />
+                ) : (
+                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    {post.description}
+                  </div>
+                )}
+              </div>
+
+              {/* Update Button */}
+              {updateMode && (
+                <div className="mt-6 flex justify-end">
+                  <button 
+                    onClick={handleEdit} 
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    Update Post
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          {updateMode ? 
-          <textarea 
-               value={desc} 
-               onChange={(e)=>setDesc(e.target.value)} 
-               className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none" 
-               type="text"
-               /> : 
-               <div>{post.description}</div>}
-          {updateMode && <button 
-              onClick={handleEdit} 
-              className="bg-green-700 text-white px-4 float-right mx-2 my-2" 
-              type="submit"
-          >Update
-          </button>}
-        </div>
-        <div className="flex-grow">
-          <Abouts />
+
+          {/* About Section */}
+          <div className="mt-8">
+            <Abouts />
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
