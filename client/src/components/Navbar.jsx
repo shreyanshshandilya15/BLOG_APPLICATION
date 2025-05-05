@@ -41,14 +41,14 @@ export default function Navbar() {
        </article>
        <ul className='flex gap-3'>
         <Link to="/">HOME</Link>
-        ABOUT
+        <Link to="/about">ABOUT</Link>
         CONTACT
         <Link to="/create">COMPOSE</Link>
         <Link to="/register" onClick={handlelogout}>{user && "LOGOUT"}</Link>
        </ul>
        <article className='flex items-center gap-2 text-xl'>
         {user ? <>
-          <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover" src={user && PF+user.profile} alt='set'/></Link>
+          <Link to="/profile"><img className="h-12 w-12 rounded-full object-cover" src={getProfileImage()} alt={user.name || 'Profile'} /></Link>
           <i className="fa-solid fa-magnifying-glass"></i> 
         </>  :
         <>

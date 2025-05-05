@@ -1,10 +1,11 @@
 import Navbar from "../components/Navbar"
 import Abouts from "../components/Abouts"
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { Context } from "../context/Context";
 import axios from "axios";
 import toast from "react-hot-toast";
 import NavbarMobile from "../components/NavbarMobile.jsx";
+import { Link } from "react-router-dom";
  
 export default function Profile() {
     const { user, dispatch } = useContext(Context);
@@ -12,7 +13,25 @@ export default function Profile() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [postCount, setPostCount] = useState(0);
+    const [userPosts, setUserPosts] = useState([]);
+    const [showPostsModal, setShowPostsModal] = useState(false);
     const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`;
+
+    useEffect(() => {
+        const fetchUserPosts = async () => {
+            try {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post?user=${user.name}`);
+                setUserPosts(res.data);
+                setPostCount(res.data.length);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        if (user) {
+            fetchUserPosts();
+        }
+    }, [user]);
 
     const handlesubmit = async (e) => {
         e.preventDefault();
@@ -64,7 +83,24 @@ export default function Profile() {
                             {/* Header Section */}
                             <div className="p-6 border-b border-gray-200">
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                    <h1 className="text-2xl font-semibold text-gray-800">Profile Settings</h1>
+                                    <div>
+                                        <h1 className="text-2xl font-semibold text-gray-800">Profile Settings</h1>
+                                        <div className="mt-2 flex items-center gap-4">
+                                            <div className="flex items-center gap-2 text-gray-600">
+                                                <i className="fas fa-pen-fancy"></i>
+                                                <span>{postCount} {postCount === 1 ? 'Post' : 'Posts'}</span>
+                                            </div>
+                                            {postCount > 0 && (
+                                                <button 
+                                                    onClick={() => setShowPostsModal(true)}
+                                                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center gap-1"
+                                                >
+                                                    <i className="fas fa-eye"></i>
+                                                    <span>View All Posts</span>
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
                                     <button className="text-red-600 hover:text-red-800 font-medium flex items-center gap-2">
                                         <i className="fas fa-trash-alt"></i>
                                         <span>Delete Account</span>
@@ -163,6 +199,55 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
+
+            {/* Posts Modal */}
+            {showPostsModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-2xl font-semibold text-gray-800">Your Posts</h2>
+                                <button 
+                                    onClick={() => setShowPostsModal(false)}
+                                    className="text-gray-500 hover:text-gray-700"
+                                >
+                                    <i className="fas fa-times text-xl"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {userPosts.map((post) => (
+                                    <div key={post._id} className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 className="text-lg font-medium text-gray-800">{post.title}</h3>
+                                            <span className="text-sm text-gray-500">
+                                                {new Date(post.createdAt).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                        <p className="text-gray-600 mb-4 line-clamp-3">{post.desc}</p>
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex gap-2">
+                                                {post.categories.map((cat) => (
+                                                    <span key={cat} className="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs">
+                                                        {cat}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <Link 
+                                                to={`/post/${post._id}`}
+                                                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                                            >
+                                                Read More
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
