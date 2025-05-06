@@ -3,6 +3,7 @@ import { Context } from "../context/Context"
 import Navbar from "../components/Navbar"
 import NavbarMobile from "../components/NavbarMobile"
 import Slider from "../components/Slider"
+import BlogReel from "../components/BlogReel"
 import axios from "axios"
 import { Link, useLocation } from "react-router-dom"
 import { motion } from "framer-motion"
@@ -67,7 +68,7 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+        <div className="min-h-screen bg-gray-50">
             <div className="hidden lg:block">
                 <Navbar />
             </div>
@@ -75,31 +76,33 @@ export default function Home() {
                 <NavbarMobile />
             </div>
 
+            {/* Slider Section */}
             <Slider />
 
-            <div className="container mx-auto px-4 py-12">
+            {/* Blog Reel Section */}
+            <BlogReel />
+
+            <div className="container mx-auto px-4 py-8">
                 {/* Category Filter */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="mb-12"
+                    className="mb-8"
                 >
-                    <div className="flex flex-wrap gap-3 justify-center">
+                    <div className="flex flex-wrap gap-2 justify-center">
                         {categories.map((category) => (
-                            <motion.button
+                            <button
                                 key={category.value}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
                                 onClick={() => setSelectedCategory(category.value)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 shadow-sm ${
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                                     selectedCategory === category.value
-                                        ? 'bg-blue-600 text-white shadow-blue-200'
-                                        : 'bg-white text-gray-700 hover:bg-gray-50 shadow-gray-100'
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
                             >
                                 {category.label}
-                            </motion.button>
+                            </button>
                         ))}
                     </div>
                 </motion.div>
@@ -120,7 +123,7 @@ export default function Home() {
                             className="w-full px-6 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-300"
                         />
                         <i className="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                </div>
+                    </div>
                 </motion.div>
 
                 {/* Search Results Info */}
@@ -155,7 +158,7 @@ export default function Home() {
                                 <div className="h-48 overflow-hidden">
                                     <img
                                         src={PF + post.photo}
-                                        alt={post.title || 'Post image'}
+                                        alt={post.title}
                                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                     />
                                 </div>
