@@ -120,7 +120,7 @@ export default function Home() {
                             className="w-full px-6 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-300"
                         />
                         <i className="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    </div>
+                </div>
                 </motion.div>
 
                 {/* Search Results Info */}

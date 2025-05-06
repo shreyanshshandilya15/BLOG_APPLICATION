@@ -15,23 +15,23 @@ export default function Post() {
   const [updateMode, setUpdateMode] = useState(false);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const { user } = useContext(Context);
 
   const getpost = async () => {
-    try{
-      let respost = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/` + path, {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      respost = await respost.json();
-      setPost(respost);
-      setTitle(respost.title);
-      setDesc(respost.description);
-    }catch(err){
-      console.error("error fetching post:",err);
+    setLoading(true);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/${path}`);
+      const postData = response.data;
+      setPost(postData);
+      setTitle(postData.title || "");
+      setDesc(postData.desc || "");
+    } catch (err) {
+      console.error("Error fetching post:", err);
+      toast.error("Error loading post");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,23 +45,39 @@ export default function Post() {
         { data: { name: user.name } });
       window.location.replace("/");
     } catch (error) {
-      toast.error("Only Creater can delete the post !");
+      toast.error("Only Creator can delete the post!");
       console.log(error);
     }
   };
 
-  const handleEdit=async()=>{
-    try{
+  const handleEdit = async () => {
+    try {
       await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/post/${post._id}`,
-       {name:user.name,title,description:desc},
+        { name: user.name, title, desc: desc },
       );
       window.location.reload();
       setUpdateMode(false);
-    }catch(err){
+    } catch (err) {
       console.log(err.response);
-      toast.error("some error occured !");
+      toast.error("Some error occurred!");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!post || !post._id) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-2xl text-gray-600">Post not found</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -77,11 +93,12 @@ export default function Post() {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             {/* Post Image */}
             {post.photo && (
-              <div className="relative w-full h-64 md:h-96 overflow-hidden">
+              <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden">
                 <img 
                   src={PF + post.photo} 
                   alt={post.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain bg-gray-100"
+                  loading="lazy"
                 />
               </div>
             )}
@@ -160,8 +177,8 @@ export default function Post() {
                     className="w-full border border-gray-300 rounded-md p-4 focus:outline-none focus:ring-2 focus:ring-green-500 resize-none min-h-[200px]" 
                   />
                 ) : (
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                    {post.description}
+                  <div className="text-gray-700 leading-relaxed whitespace-pre-wrap text-lg">
+                    {post.desc}
                   </div>
                 )}
               </div>
