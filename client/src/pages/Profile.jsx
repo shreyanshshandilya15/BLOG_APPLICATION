@@ -1,12 +1,11 @@
 import Navbar from "../components/Navbar"
-import Abouts from "../components/Abouts"
 import { useContext, useState, useEffect } from "react"
 import { Context } from "../context/Context";
 import axios from "axios";
 import toast from "react-hot-toast";
 import NavbarMobile from "../components/NavbarMobile.jsx";
 import { Link } from "react-router-dom";
- 
+
 export default function Profile() {
     const { user, dispatch } = useContext(Context);
     const [file, setFile] = useState("");
@@ -16,7 +15,7 @@ export default function Profile() {
     const [postCount, setPostCount] = useState(0);
     const [userPosts, setUserPosts] = useState([]);
     const [showPostsModal, setShowPostsModal] = useState(false);
-    const PF=`${import.meta.env.VITE_BACKEND_URL}/images/`;
+    const PF = `${import.meta.env.VITE_BACKEND_URL}/images/`;
 
     useEffect(() => {
         const fetchUserPosts = async () => {
@@ -72,94 +71,85 @@ export default function Profile() {
             </div>
 
             <div className="container mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="max-w-4xl mx-auto">
                     {/* Main Content */}
-                    <div className="lg:col-span-8">
-                        <div className="bg-white rounded-lg shadow-md p-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <h1 className="text-2xl font-semibold text-gray-800">Your Profile</h1>
-                                <button
-                                    onClick={() => setShowPostsModal(true)}
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                                >
-                                    View All Posts ({postCount})
-                                </button>
+                    <div className="bg-white rounded-lg shadow-md p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <h1 className="text-2xl font-semibold text-gray-800">Your Profile</h1>
+                            <button
+                                onClick={() => setShowPostsModal(true)}
+                                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                            >
+                                View All Posts ({postCount})
+                            </button>
+                        </div>
+
+                        <form onSubmit={handlesubmit} className="space-y-6">
+                            <div className="flex items-center space-x-4">
+                                <div className="relative">
+                                    <img
+                                        src={user.profile ? (user.profile.includes('googleusercontent.com') ? user.profile : PF + user.profile) : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666666'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"}
+                                        alt="Profile"
+                                        className="w-24 h-24 rounded-full object-cover"
+                                    />
+                                    <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full cursor-pointer">
+                                        <input
+                                            type="file"
+                                            className="hidden"
+                                            onChange={(e) => setFile(e.target.files[0])}
+                                        />
+                                        <i className="fas fa-camera"></i>
+                                    </label>
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-semibold">{user.name}</h2>
+                                    <p className="text-gray-600">{user.email}</p>
+                                </div>
                             </div>
 
-                            <form onSubmit={handlesubmit} className="space-y-6">
-                                <div className="flex items-center space-x-4">
-                                    <div className="relative">
-                                        <img
-                                            src={user.profile ? (user.profile.includes('googleusercontent.com') ? user.profile : PF + user.profile) : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666666'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E"}
-                                            alt="Profile"
-                                            className="w-24 h-24 rounded-full object-cover"
-                                        />
-                                        <label className="absolute bottom-0 right-0 bg-blue-600 text-white p-1 rounded-full cursor-pointer">
-                                            <input
-                                                type="file"
-                                                className="hidden"
-                                                onChange={(e) => setFile(e.target.files[0])}
-                                            />
-                                            <i className="fas fa-camera"></i>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <h2 className="text-xl font-semibold">{user.name}</h2>
-                                        <p className="text-gray-600">{user.email}</p>
-                                    </div>
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Name
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    placeholder="Enter new password"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Password
-                                    </label>
-                                    <input
-                                        type="password"
-                                        placeholder="Enter new password"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        onChange={(e) => setPassword(e.target.value)}
-                                    />
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                >
-                                    Update Profile
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    {/* Sidebar */}
-                    <div className="lg:col-span-4">
-                        <div className="sticky top-6">
-                            <Abouts />
-                        </div>
+                            <button
+                                type="submit"
+                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            >
+                                Update Profile
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

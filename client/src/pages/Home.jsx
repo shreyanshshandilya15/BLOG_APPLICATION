@@ -2,8 +2,10 @@ import { useContext, useEffect, useState } from "react"
 import { Context } from "../context/Context"
 import Navbar from "../components/Navbar"
 import NavbarMobile from "../components/NavbarMobile"
+import Slider from "../components/Slider"
 import axios from "axios"
 import { Link, useLocation } from "react-router-dom"
+import { motion } from "framer-motion"
 
 export default function Home() {
     const { user } = useContext(Context);
@@ -65,7 +67,7 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
             <div className="hidden lg:block">
                 <Navbar />
             </div>
@@ -73,87 +75,139 @@ export default function Home() {
                 <NavbarMobile />
             </div>
 
-            <div className="container mx-auto px-4 py-8">
+            <Slider />
+
+            <div className="container mx-auto px-4 py-12">
                 {/* Category Filter */}
-                <div className="mb-8">
-                    <div className="flex flex-wrap gap-2 justify-center">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-12"
+                >
+                    <div className="flex flex-wrap gap-3 justify-center">
                         {categories.map((category) => (
-                            <button
+                            <motion.button
                                 key={category.value}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                                 onClick={() => setSelectedCategory(category.value)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 shadow-sm ${
                                     selectedCategory === category.value
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        ? 'bg-blue-600 text-white shadow-blue-200'
+                                        : 'bg-white text-gray-700 hover:bg-gray-50 shadow-gray-100'
                                 }`}
                             >
                                 {category.label}
-                            </button>
+                            </motion.button>
                         ))}
                     </div>
-                </div>
+                </motion.div>
+
+                {/* Search Bar */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="mb-12 flex justify-center"
+                >
+                    <div className="w-full max-w-md relative">
+                        <input
+                            type="text"
+                            placeholder="Search posts..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full px-6 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-300"
+                        />
+                        <i className="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </motion.div>
 
                 {/* Search Results Info */}
                 {searchQuery && (
-                    <div className="text-center mb-6">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center mb-8"
+                    >
                         <p className="text-gray-600">
-                            Showing results for: <span className="font-semibold">{searchQuery}</span>
+                            Showing results for: <span className="font-semibold text-blue-600">{searchQuery}</span>
                         </p>
-                    </div>
+                    </motion.div>
                 )}
 
                 {/* Posts Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredPosts.map((post) => (
-                        <div key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                >
+                    {filteredPosts.map((post, index) => (
+                        <motion.div
+                            key={post._id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                        >
                             {post.photo && (
                                 <div className="h-48 overflow-hidden">
                                     <img
                                         src={PF + post.photo}
                                         alt={post.title || 'Post image'}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                                     />
                                 </div>
                             )}
                             <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                                <div className="flex justify-between items-start mb-3">
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
                                         {post.categories || 'Uncategorized'}
                                     </span>
                                     <span className="text-sm text-gray-500">
                                         {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : ''}
                                     </span>
                                 </div>
-                                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                                <h2 className="text-xl font-semibold text-gray-800 mb-3 hover:text-blue-600 transition-colors">
                                     {post.title || 'Untitled'}
                                 </h2>
-                                <p className="text-gray-600 mb-4 text-sm">
+                                <p className="text-gray-600 mb-4 text-sm line-clamp-3">
                                     {truncateText(post.desc || '')}
                                 </p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm text-gray-500">
-                                        By {post.author || 'Unknown'}
+                                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                                    <span className="text-sm text-gray-500 flex items-center">
+                                        <i className="fas fa-user-circle mr-2"></i>
+                                        {post.author || 'Unknown'}
                                     </span>
                                     <Link
                                         to={`/post/${post._id}`}
-                                        className="text-blue-600 hover:text-blue-800 font-medium"
+                                        className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
                                     >
                                         Read More
+                                        <i className="fas fa-arrow-right ml-2"></i>
                                     </Link>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
 
                 {filteredPosts.length === 0 && (
-                    <div className="text-center py-12">
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center py-16"
+                    >
+                        <div className="text-gray-400 text-6xl mb-4">
+                            <i className="fas fa-search"></i>
+                        </div>
                         <p className="text-gray-500 text-lg">
                             {searchQuery 
                                 ? "No posts found matching your search."
                                 : "No posts found in this category."}
                         </p>
-                    </div>
+                    </motion.div>
                 )}
             </div>
         </div>
