@@ -11,7 +11,7 @@ export default function Slider() {
                         Let's Write Something...
                     </h2>
                     <h1 className="text-6xl md:text-8xl font-bold text-white tracking-wider animate-slide-up">
-                        BLOG APPLICATION
+                        VIBELOG
                     </h1>
                 </div>
             </div>
