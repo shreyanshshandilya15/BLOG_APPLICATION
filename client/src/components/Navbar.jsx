@@ -37,7 +37,7 @@ export default function Navbar() {
        <article className='flex gap-8 text-xl '>
        <a href=""><i className="fa-brands fa-facebook"></i></a>
        <a href=""><i className="fa-brands fa-instagram"></i></a>
-       <a href="https://twitter.com/Shreyan80810857"><i className="fa-brands fa-twitter"></i></a>
+       <a href=""><i className="fa-brands fa-twitter"></i></a>
        <a href=""><i className="fa-brands fa-pix"></i></a>
        </article>
        <ul className='flex gap-3'>

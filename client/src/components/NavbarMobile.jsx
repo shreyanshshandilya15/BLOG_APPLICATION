@@ -46,7 +46,7 @@ export default function NavbarMobile() {
           <article className='flex items-center justify-center gap-8 text-xl'>
             <a href="" className="hover:text-blue-600 transition-colors"><i className="fa-brands fa-facebook"></i></a>
             <a href="" className="hover:text-pink-600 transition-colors"><i className="fa-brands fa-instagram"></i></a>
-            <a href="https://twitter.com/Shreyan80810857" className="hover:text-blue-400 transition-colors"><i className="fa-brands fa-twitter"></i></a>
+            <a href="" className="hover:text-blue-400 transition-colors"><i className="fa-brands fa-twitter"></i></a>
             <a href="" className="hover:text-gray-600 transition-colors"><i className="fa-brands fa-pix"></i></a>
           </article>
         </div>
